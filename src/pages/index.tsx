@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchPortfolioItems } from '@/store/portfolioSlice';
+import AddPortfolioForm from '@/components/AddPortfolioForm';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const { items, loading, error } = useSelector((state: RootState) => state.portfolio);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchPortfolioItems());
@@ -21,7 +23,15 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Cryptocurrency Portfolio</h1>
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Cryptocurrency Portfolio</h1>
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Add New Item
+        </button>
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
@@ -44,6 +54,7 @@ export default function Home() {
           </tbody>
         </table>
       </div>
+      <AddPortfolioForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </div>
   );
 } 

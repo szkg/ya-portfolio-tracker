@@ -2,14 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getPortfolioItems, addPortfolioItem } from '@/lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.url === '/api/portfolio') {
+  if (req.method === 'GET') {
     try {
       const items = await getPortfolioItems();
       res.status(200).json(items);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch portfolio items' });
     }
-  } else if (req.url === '/api/portfolio') {
+  } else if (req.method === 'POST') {
     try {
       const item = req.body;
       await addPortfolioItem(item);
