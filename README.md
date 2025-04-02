@@ -7,7 +7,7 @@ A Next.js application for tracking cryptocurrency portfolio holdings.
 - View cryptocurrency portfolio holdings in a table format
 - Add new cryptocurrency holdings
 - Real-time updates using Redux state management
-- SQLite database for persistent storage
+- Firebase for data persistence
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ yarn start
 
 - `/src/pages` - Next.js pages and API routes
 - `/src/store` - Redux store configuration and slices
-- `/src/lib` - Database utilities and types
+- `/src/lib` - Firebase utilities and types
 - `/src/styles` - Global styles and Tailwind CSS configuration
 
 ## Technologies Used
@@ -71,6 +71,6 @@ yarn start
 - Next.js
 - React
 - Redux Toolkit
-- SQLite3
+- Firebase
 - TypeScript
 - Tailwind CSS 
