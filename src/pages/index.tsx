@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { fetchPortfolioItems } from '@/store/portfolioSlice';
-import AddPortfolioForm from '@/components/AddPortfolioForm';
+import AddNewTransactionItem from '@/components/AddNewTransactionItem';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -54,7 +54,7 @@ export default function Home() {
           </tbody>
         </table>
       </div>
-      <AddPortfolioForm isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
+      <AddNewTransactionItem isOpen={isFormOpen} onClose={() => setIsFormOpen(false)} />
     </div>
   );
 } 

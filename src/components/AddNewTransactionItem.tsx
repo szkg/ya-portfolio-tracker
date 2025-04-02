@@ -3,12 +3,12 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { addPortfolioItem } from '@/store/portfolioSlice';
 
-interface AddPortfolioFormProps {
+interface AddNewTransactionItemProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function AddPortfolioForm({ isOpen, onClose }: AddPortfolioFormProps) {
+export default function AddNewTransactionItem({ isOpen, onClose }: AddNewTransactionItemProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState({
     ticker: '',
