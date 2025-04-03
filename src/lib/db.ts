@@ -32,7 +32,7 @@ export async function getPortfolioItemByTicker(ticker: string): Promise<Portfoli
   } as PortfolioItem;
 }
 
-export async function addPortfolioItem(item: Omit<PortfolioItem, 'id'>): Promise<void> {
+export async function addPortfolioItem(item: Omit<PortfolioItem, 'id'>): Promise<PortfolioItem> {
   const existingItem = await getPortfolioItemByTicker(item.ticker);
   
   if (existingItem) {
@@ -44,8 +44,24 @@ export async function addPortfolioItem(item: Omit<PortfolioItem, 'id'>): Promise
       count: newCount,
       holdingValue: newHoldingValue
     });
+
+    // Return the updated item
+    return {
+      id: existingItem.id,
+      ticker: existingItem.ticker,
+      name: existingItem.name,
+      count: newCount,
+      holdingValue: newHoldingValue
+    };
   } else {
     // Insert new record
-    await setDoc(doc(collection(db, 'portfolio')), item);
+    const newDocRef = doc(collection(db, 'portfolio'));
+    await setDoc(newDocRef, item);
+    
+    // Return the newly created item
+    return {
+      id: newDocRef.id,
+      ...item
+    };
   }
 } 
