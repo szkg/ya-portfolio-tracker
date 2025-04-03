@@ -60,7 +60,14 @@ const portfolioSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch portfolio items';
       })
       .addCase(addPortfolioItem.fulfilled, (state, action) => {
-        state.items.push(action.payload);
+        const existingIndex = state.items.findIndex(item => item.id === action.payload.id);
+        if (existingIndex >= 0) {
+          // Update existing item
+          state.items[existingIndex] = action.payload;
+        } else {
+          // Add new item
+          state.items.push(action.payload);
+        }
       });
   },
 });

@@ -12,8 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else if (req.method === 'POST') {
     try {
       const item = req.body;
-      await addPortfolioItem(item);
-      res.status(201).json(item);
+      const newItem = await addPortfolioItem(item);
+      res.status(201).json(newItem);
     } catch (error) {
       res.status(500).json({ error: 'Failed to add portfolio item' });
     }
