@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store/store';
 import { addPortfolioItem } from '@/store/portfolioSlice';
 
-interface AddBuyItemProps {
+interface AddTransactionProps {
   onClose: () => void;
+  transactionType: 'buy' | 'sell';
 }
 
-export default function AddBuyItem({ onClose }: AddBuyItemProps) {
+export default function AddTransaction({ onClose, transactionType }: AddTransactionProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [formData, setFormData] = useState({
     ticker: '',
@@ -23,6 +24,7 @@ export default function AddBuyItem({ onClose }: AddBuyItemProps) {
       name: formData.name,
       count: parseFloat(formData.count),
       holdingValue: parseFloat(formData.holdingValue),
+      transactionType
     }));
     setFormData({ ticker: '', name: '', count: '', holdingValue: '' });
     onClose();
@@ -96,7 +98,7 @@ export default function AddBuyItem({ onClose }: AddBuyItemProps) {
           type="submit"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Add Buy
+          {transactionType === 'buy' ? 'Buy' : 'Sell'}
         </button>
       </div>
     </form>

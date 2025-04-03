@@ -7,6 +7,7 @@ export interface PortfolioItem {
   name: string;
   count: number;
   holdingValue: number;
+  transactionType: 'buy' | 'sell' | null;
 }
 
 export async function getPortfolioItems(): Promise<PortfolioItem[]> {
@@ -37,8 +38,19 @@ export async function addPortfolioItem(item: Omit<PortfolioItem, 'id'>): Promise
   
   if (existingItem) {
     // Update existing record
-    const newCount = existingItem.count + item.count;
-    const newHoldingValue = existingItem.holdingValue + item.holdingValue;
+    const newCount = item.transactionType === 'sell' 
+      ? existingItem.count - item.count 
+      : existingItem.count + item.count;
+    const newHoldingValue = item.transactionType === 'sell'
+      ? existingItem.holdingValue - item.holdingValue
+      : existingItem.holdingValue + item.holdingValue;
+    
+    if (newCount < 0) {
+      throw new Error('Insufficient count to sell');
+    }
+    if (newHoldingValue < 0) {
+      throw new Error('Insufficient holding value to sell');
+    }
     
     await updateDoc(doc(db, 'portfolio', existingItem.id), {
       count: newCount,
@@ -51,17 +63,29 @@ export async function addPortfolioItem(item: Omit<PortfolioItem, 'id'>): Promise
       ticker: existingItem.ticker,
       name: existingItem.name,
       count: newCount,
-      holdingValue: newHoldingValue
+      holdingValue: newHoldingValue,
+      transactionType: null
     };
+  } else if (item.transactionType === 'sell') {
+    throw new Error('Cannot sell non-existent portfolio item');
   } else {
     // Insert new record
     const newDocRef = doc(collection(db, 'portfolio'));
-    await setDoc(newDocRef, item);
+    await setDoc(newDocRef, {
+      ticker: item.ticker,
+      name: item.name,
+      count: item.count,
+      holdingValue: item.holdingValue
+    });
     
     // Return the newly created item
     return {
       id: newDocRef.id,
-      ...item
+      ticker: item.ticker,
+      name: item.name,
+      count: item.count,
+      holdingValue: item.holdingValue,
+      transactionType: null
     };
   }
 } 

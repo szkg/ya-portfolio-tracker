@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import AddBuyItem from './AddBuyItem';
+import AddTransaction from './AddTransaction';
 
-interface AddNewTransactionItemProps {
+interface TransactionDialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function AddNewTransactionItem({ isOpen, onClose }: AddNewTransactionItemProps) {
+export default function TransactionDialog({ isOpen, onClose }: TransactionDialogProps) {
   const [activeTab, setActiveTab] = useState('buy');
 
   if (!isOpen) return null;
@@ -44,13 +44,9 @@ export default function AddNewTransactionItem({ isOpen, onClose }: AddNewTransac
 
         {/* Tab Content */}
         <div className="mt-4">
-          {activeTab === 'buy' && <AddBuyItem onClose={onClose} />}
+          {activeTab === 'buy' && <AddTransaction onClose={onClose} transactionType="buy" />}
+          {activeTab === 'sell' && <AddTransaction onClose={onClose} transactionType="sell" />}
           
-          {activeTab === 'sell' && (
-            <div className="text-center py-8 text-gray-500">
-              Sell functionality coming soon...
-            </div>
-          )}
         </div>
       </div>
     </div>
